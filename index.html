@@ -11,43 +11,22 @@
       margin: 0;
       overflow: hidden;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Animated background layer */
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-
       background-image: url("./cat.png");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
 
-      animation: slowZoom 30s ease-in-out infinite alternate;
-      z-index: -2;
-      transform-origin: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    /* Dark overlay */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.35);
-      z-index: -1;
-    }
-
-    @keyframes slowZoom {
-      from {
-        transform: scale(1);
-      }
-      to {
-        transform: scale(1.12);
-      }
+      z-index: 0;
     }
 
     .card {
@@ -93,6 +72,26 @@
       z-index: 2;
     }
 
+    /* Pulse animation */
+    .pulse {
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.7);
+      }
+      70% {
+        transform: scale(1.08);
+        box-shadow: 0 0 0 18px rgba(255, 77, 109, 0);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 77, 109, 0);
+      }
+    }
+
     .no {
       background-color: #ddd;
       position: absolute;
@@ -126,6 +125,8 @@
     const yesBtn = document.getElementById("yesBtn");
     const response = document.getElementById("response");
 
+    let yesClicks = 0;
+
     card.addEventListener("mousemove", (e) => {
       const cardRect = card.getBoundingClientRect();
       const btnRect = noBtn.getBoundingClientRect();
@@ -144,9 +145,20 @@
     });
 
     yesBtn.addEventListener("click", () => {
-      response.innerHTML =
-        "Perfect! It's a date. Me. You. Dinner. 4pm. After that, COCKtails 6:45. After that let's get NASTY.";
-      noBtn.style.display = "none";
+      yesClicks++;
+
+      if (yesClicks === 1) {
+        response.innerHTML =
+          "Perfect! It's a date. Me. You. Dinner. 4pm. After that, COCKtails 6:45. After that let's get NASTY.";
+        noBtn.style.display = "none";
+        yesBtn.classList.add("pulse"); // start pulsing
+      } else if (yesClicks === 2) {
+        response.innerHTML =
+          "I knew you were gonna click yes again, but that is all.";
+      } else if (yesClicks === 3) {
+        response.innerHTML =
+          "Relax i know youre very eager to spend valentines with me.";
+      }
     });
   </script>
 </body>
