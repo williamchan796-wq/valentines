@@ -9,24 +9,45 @@
       font-family: Arial, sans-serif;
       height: 100vh;
       margin: 0;
-
-      background-image: url("./cat.png");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      overflow: hidden;
 
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    /* dark overlay for contrast */
+    /* Animated background layer */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+
+      background-image: url("./cat.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      animation: slowZoom 30s ease-in-out infinite alternate;
+      z-index: -2;
+      transform-origin: center;
+    }
+
+    /* Dark overlay */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.35);
-      z-index: 0;
+      z-index: -1;
+    }
+
+    @keyframes slowZoom {
+      from {
+        transform: scale(1);
+      }
+      to {
+        transform: scale(1.12);
+      }
     }
 
     .card {
@@ -34,7 +55,6 @@
       height: 412px;
       padding: 40px;
 
-      /* GLASS EFFECT */
       background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
